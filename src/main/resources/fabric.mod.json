@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "yooli8537_apocalypse_zombies",
+	"version": "${version}",
+	"name": "[Y] Apocalypse Zombies",
+	"description": "Zombies straight out of the Apocalypse. Part of my Apocalypse Modpack.",
+	"authors": [
+		"Yooli8537"
+	],
+	"contact": {
+		"sources": "https://github.com/ebholi/Abschlussprojekt_2025_API-1_ebholi_Minecraft-Zombie-Mod"
+	},
+	"license": "MIT",
+	"icon": "assets/y_apocalypse_zombies/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.example.ExampleMod"
+		],
+		"client": [
+			"com.example.client.ExampleModClient"
+		]
+	},
+	"mixins": [
+		"modid.mixins.json",
+		{
+			"config": "modid.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
