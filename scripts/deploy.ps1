@@ -3,34 +3,29 @@
 Write-Host "Deploying Mod to Modrinth Instance..." -ForegroundColor Cyan
 
 # Path to test instance
-$testInstancePath = "C:\Users\<username>\AppData\Roaming\ModrinthApp\profiles\Mod Environment\mods"
+$testInstanceModPath = "$env:APPDATA\ModrinthApp\profiles\Mod Environment\mods"
+
+if (!(Test-Path $testInstanceModPath)) {
+    Write-Host "Couldn't find Modrinth Instance." -ForegroundColor Red
+    Write-Host 'Make sure your Modrinth Instance Folder is named "Mod Environment".' -ForegroundColor Cyan
+    exit 1
+}
 
 # Gets most recent .jar file (the one we want)
 $jar = Get-ChildItem "build/libs/*.jar" |
         Sort-Object LastWriteTime -Descending |
         Select-Object -First 1
 
-if (!$testInstancePath) {
-    Write-Host "Couldn't find Modrinth Instance." -ForegroundColor Red
-    Write-Host 'Make sure your Modrinth Instance Folder is named "Mod Environment".' -ForegroundColor Red
-} elseif ($testInstancePath + $jar) {
-    Write-Host "Overwriting previous .jar File..." -ForegroundColor Cyan
+if (!$jar)
+{
+    Write-Host "Couldn't find .jar file." -ForegroundColor Red
+    Write-Host "Make sure you build the new .jar file before deploying" -ForegroundColor Cyan
+    exit 1
 }
 
-if ($LASTEXITCODE -eq 0) {
-    $jar = Get-ChildItem "build/libs/*.jar" |
-        Sort-Object LastWriteTime -Descending |
-        Select-Object -First 1
+Get-ChildItem $testInstanceModPath -Filter "y_apocalypse_zombies*.jar" |
+    Remove-Item -Force
 
-    Write-Host "Build Succeeded" -ForegroundColor Green
-
-    if ($jar) {
-        Write-Host ".jar File:" -ForegroundColor Cyan
-        Write-Host $jar.FullName -ForegroundColor Cyan
-    } else {
-        Write-Host "Couldn't find .jar File" -ForegroundColor Red
-    }
-} else {
-    Write-Host "Build Failed" -ForegroundColor Red -ForegroundColor Red
-    Write-Host "Gradle exited with code $LASTEXITCODE" -ForegroundColor Red
-}
+    Write-Host "Placing new Mod version..." -ForegroundColor Cyan
+    Copy-Item $jar.FullName $testInstanceModPath -Force
+    Write-Host "Successfully placed new Mod version in Modrinth Instance" -ForegroundColor Green
