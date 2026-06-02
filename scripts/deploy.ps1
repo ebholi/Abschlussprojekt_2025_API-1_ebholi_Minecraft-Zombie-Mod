@@ -23,9 +23,11 @@ if (!$jar)
     exit 1
 }
 
+# Removes other (older) versions of the Mod
 Get-ChildItem $testInstanceModPath -Filter "y_apocalypse_zombies*.jar" |
     Remove-Item -Force
 
-    Write-Host "Placing new Mod version..." -ForegroundColor Cyan
-    Copy-Item $jar.FullName $testInstanceModPath -Force
-    Write-Host "Successfully placed new Mod version in Modrinth Instance" -ForegroundColor Green
+# Places .jar file
+Write-Host "Placing new Mod version..." -ForegroundColor Cyan
+Copy-Item $jar.FullName $testInstanceModPath -Force
+Write-Host "Successfully placed new Mod version in Modrinth Instance" -ForegroundColor Green
