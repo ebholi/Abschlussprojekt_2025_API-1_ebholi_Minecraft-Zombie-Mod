@@ -20,7 +20,7 @@ public class ExampleMod implements ModInitializer {
         // Proceed with mild caution.
 
         ModEntityTypes.registerModEntityTypes();
-        ModEntityTypes.registerCubeAttributes();
+        ModEntityTypes.registerYZombieAttributes();
 
         LOGGER.info("Hello Fabric world!");
     }
