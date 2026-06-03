@@ -24,7 +24,6 @@ public class ModEntityTypes {
 
     public static void registerModEntityTypes() {
         ExampleMod.LOGGER.info("Registering EntityTypes for " + ExampleMod.MOD_ID);
-        ExampleMod.LOGGER.info("Registered: " + BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE);
     }
 
     public static void registerYZombieAttributes() {
