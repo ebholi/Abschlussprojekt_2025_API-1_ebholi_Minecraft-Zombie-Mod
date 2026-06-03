@@ -17,6 +17,12 @@ public class ModEntityTypes {
                     .sized(0.6f, 1.95f) // Default: 0.6f | 1.95f
     );
 
+    public static final EntityType<TankApocalypseZombie> TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE = register(
+            "tank_apocalypse_zombie",
+            EntityType.Builder.<TankApocalypseZombie>of(TankApocalypseZombie::new, MobCategory.MONSTER)
+                    .sized(0.8f, 2.5f) // Default: 0.6f | 1.95f
+    );
+
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -28,5 +34,6 @@ public class ModEntityTypes {
 
     public static void registerYZombieAttributes() {
         FabricDefaultAttributeRegistry.register(BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE, BaseApocalypseZombie.createCubeAttributes());
+        FabricDefaultAttributeRegistry.register(TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE, TankApocalypseZombie.createCubeAttributes());
     }
 }
