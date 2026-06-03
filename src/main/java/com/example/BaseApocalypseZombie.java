@@ -9,6 +9,8 @@ import net.minecraft.world.level.Level;
 public class BaseApocalypseZombie extends Zombie {
     public BaseApocalypseZombie(EntityType<? extends Zombie> entityType, Level world) {
         super(entityType, world);
+
+        this.xpReward = 2;
     }
 
     // Burning in the Sun
@@ -23,10 +25,16 @@ public class BaseApocalypseZombie extends Zombie {
         super.setBaby(false);
     }
 
-    // Default Attributes
-    public static AttributeSupplier.Builder createCubeAttributes() {
-        return BaseApocalypseZombie.createAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return Zombie.createAttributes()
+                .add(Attributes.ARMOR, 2)
+                .add(Attributes.ATTACK_DAMAGE, 3)
+                .add(Attributes.ATTACK_KNOCKBACK, 0)
                 .add(Attributes.FOLLOW_RANGE, 72)
-                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 0);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0)
+                .add(Attributes.MOVEMENT_SPEED, 0.23)
+                .add(Attributes.STEP_HEIGHT, 0.6)
+                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 0)
+                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, Math.random() * 0.1);
     }
 }

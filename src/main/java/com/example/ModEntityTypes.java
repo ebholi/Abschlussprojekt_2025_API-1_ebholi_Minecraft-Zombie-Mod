@@ -33,7 +33,7 @@ public class ModEntityTypes {
     }
 
     public static void registerYZombieAttributes() {
-        FabricDefaultAttributeRegistry.register(BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE, BaseApocalypseZombie.createCubeAttributes());
-        FabricDefaultAttributeRegistry.register(TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE, TankApocalypseZombie.createCubeAttributes());
+        FabricDefaultAttributeRegistry.register(BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE, BaseApocalypseZombie.createAttributes());
+        FabricDefaultAttributeRegistry.register(TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE, TankApocalypseZombie.createAttributes());
     }
 }
