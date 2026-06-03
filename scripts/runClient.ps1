@@ -14,6 +14,8 @@ else
     Write-Host "Gradle exited with Code $LASTEXITCODE" -ForegroundColor Red
 }
 
+Write-Host "Launching Minecraft..." -ForegroundColor Cyan
+
 ./gradlew runClient
 
 if ($LASTEXITCODE -eq 0)
@@ -24,5 +26,5 @@ else
 {
     Write-Host "Something went wrong." -ForegroundColor Red
     Write-Host "Minecraft exited with Code $LASTEXITCODE" -ForegroundColor Red
-    Write-Host "Note: Terminating the game by ending the task or performing similar actions can produce an artificial error." -ForegroundColor Cyan
+    Write-Host "Note: Terminating the game by ending the task or performing similar actions can produce an artificial error." -ForegroundColor White
 }
