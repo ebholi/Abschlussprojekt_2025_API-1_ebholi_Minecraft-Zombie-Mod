@@ -24,9 +24,10 @@ public class ModEntityTypes {
 
     public static void registerModEntityTypes() {
         ExampleMod.LOGGER.info("Registering EntityTypes for " + ExampleMod.MOD_ID);
+        ExampleMod.LOGGER.info("Registered: " + BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE);
     }
 
-    public static void registerAttributes() {
+    public static void registerCubeAttributes() {
         FabricDefaultAttributeRegistry.register(BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE, BaseApocalypseZombie.createCubeAttributes());
     }
 }

@@ -18,11 +18,11 @@ else
 
 if ($LASTEXITCODE -eq 0)
 {
-    Write-Host "Successfully ran Minecraft." -ForegroundColor Green
+    Write-Host "Successfully ran & exited Minecraft." -ForegroundColor Green
 }
 else
 {
     Write-Host "Something went wrong." -ForegroundColor Red
     Write-Host "Minecraft exited with Code $LASTEXITCODE" -ForegroundColor Red
-    Write-Host "Note: Leaving the game by ending the Task or performing similar actions can produce an artificial error." -ForegroundColor Cyan
+    Write-Host "Note: Terminating the game by ending the task or performing similar actions can produce an artificial error." -ForegroundColor Cyan
 }
