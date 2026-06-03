@@ -49,3 +49,7 @@ cd Abschlussprojekt_2025_API-1_ebholi_Minecraft-Zombie-Mod
 
 3. Navigate to this directory: `Abschlussprojekt_2025_API-1_ebholi_Minecraft-Zombie-Mod\build\libs\`
 4. Copy the `y_apocalypse_zombies-X.X.X.jar` file and paste it into your Minecraft Launcher's `mods/` folder.
+
+## Scripts
+
+This project includes three scripts to aid development. If you want to install the scripts, you can download them in this [repository](https://github.com/Yooli8537/Minecraft-Fabric-1.21.11-Development-Scripts).
