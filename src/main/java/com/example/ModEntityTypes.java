@@ -14,7 +14,7 @@ public class ModEntityTypes {
     public static final EntityType<BaseApocalypseZombie> BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE = register(
             "base_apocalypse_zombie",
             EntityType.Builder.<BaseApocalypseZombie>of(BaseApocalypseZombie::new, MobCategory.MONSTER)
-                    .sized(1f, 2f)
+                    .sized(0.6f, 1.95f) // Default: 0.6f | 1.95f
     );
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
