@@ -20,7 +20,7 @@ public class ModEntityTypes {
     public static final EntityType<TankApocalypseZombie> TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE = register(
             "tank_apocalypse_zombie",
             EntityType.Builder.<TankApocalypseZombie>of(TankApocalypseZombie::new, MobCategory.MONSTER)
-                    .sized(0.8f, 2.5f) // Default: 0.6f | 1.95f
+                    .sized(0.8f, 2.5f)
     );
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {

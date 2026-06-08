@@ -32,7 +32,8 @@ public class BaseApocalypseZombie extends Zombie {
                 .add(Attributes.ATTACK_KNOCKBACK, 0)
                 .add(Attributes.FOLLOW_RANGE, 72)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0)
-                .add(Attributes.MOVEMENT_SPEED, 0.23)
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.MAX_HEALTH, 16)
                 .add(Attributes.STEP_HEIGHT, 0.6)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 0)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, Math.random() * 0.1);

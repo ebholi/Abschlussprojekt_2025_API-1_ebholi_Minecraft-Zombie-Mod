@@ -1,6 +1,5 @@
 package com.example;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,6 +18,13 @@ public class TankApocalypseZombie extends BaseApocalypseZombie{
         return BaseApocalypseZombie.createAttributes()
                 .add(Attributes.ARMOR, 8)
                 .add(Attributes.JUMP_STRENGTH, 0.725)
-                .add(Attributes.MAX_HEALTH, 40);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.3)
+                .add(Attributes.MOVEMENT_SPEED, 0.18)
+                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.3)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.5)
+                .add(Attributes.ATTACK_DAMAGE, 7)
+                .add(Attributes.STEP_HEIGHT, 1.125)
+                .add(Attributes.SAFE_FALL_DISTANCE, 5)
+                .add(Attributes.MAX_HEALTH, 50);
     }
 }
