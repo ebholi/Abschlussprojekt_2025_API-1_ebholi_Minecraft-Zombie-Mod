@@ -18,5 +18,10 @@ public class ExampleModClient implements ClientModInitializer {
                 ModEntityTypes.TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE,
                 ZombieRenderer::new
         );
+
+        EntityRendererRegistry.register(
+                ModEntityTypes.RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE,
+                ZombieRenderer::new
+        );
     }
 }

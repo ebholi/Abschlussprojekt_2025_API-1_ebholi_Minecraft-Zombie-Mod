@@ -8,6 +8,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 
 public class ModEntityTypes {
@@ -23,6 +24,11 @@ public class ModEntityTypes {
                     .sized(0.8f, 2.5f)
     );
 
+    public static final EntityType<RusherApocalypseZombie> RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE = register(
+            "rusher_apocalypse_zombie",
+            EntityType.Builder.<RusherApocalypseZombie>of(RusherApocalypseZombie::new, MobCategory.MONSTER).sized(0.6f, 1.7f)
+    );
+
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
@@ -35,5 +41,6 @@ public class ModEntityTypes {
     public static void registerYZombieAttributes() {
         FabricDefaultAttributeRegistry.register(BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE, BaseApocalypseZombie.createAttributes());
         FabricDefaultAttributeRegistry.register(TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE, TankApocalypseZombie.createAttributes());
+        FabricDefaultAttributeRegistry.register(RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE, RusherApocalypseZombie.createAttributes());
     }
 }
