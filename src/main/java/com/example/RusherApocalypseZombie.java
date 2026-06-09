@@ -44,7 +44,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie {
         @Override
         public boolean canUse() {
             target = RusherApocalypseZombie.this.getTarget();
-            return target != null && rushCooldown <= 0;
+            return target != null && rushCooldown <= 0 && RusherApocalypseZombie.this.distanceTo(target) >= 8;
         }
 
         @Override
@@ -75,14 +75,14 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie {
         public void tick() {
             target = RusherApocalypseZombie.this.getTarget();
             if (target != null) {
-                RusherApocalypseZombie.this.getNavigation().moveTo(target, 1);
+                RusherApocalypseZombie.this.getNavigation().moveTo(target, 0.8);
             }
         }
 
         @Override
         public boolean canContinueToUse() {
             target = RusherApocalypseZombie.this.getTarget();
-            if (target == null || RusherApocalypseZombie.this.distanceTo(target) < 5) {
+            if (target == null || RusherApocalypseZombie.this.distanceTo(target) < 4) {
                 gotToTarget = true;
                 return false;
             }
