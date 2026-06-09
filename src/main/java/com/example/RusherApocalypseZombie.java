@@ -38,6 +38,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie {
     public class RushGoal extends Goal {
         private static final Identifier RUSH_SPEED = Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "rush_speed");
         private LivingEntity target;
+        private boolean gotToTarget = false;
 
         // Checks for a target, which will trigger the Ability.
         @Override
@@ -48,6 +49,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie {
 
         @Override
         public void start() {
+            gotToTarget = false;
             RusherApocalypseZombie.this.getAttribute(Attributes.MOVEMENT_SPEED).addOrReplacePermanentModifier(
                     new AttributeModifier(
                             RUSH_SPEED,
@@ -60,7 +62,12 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie {
         @Override
         public void stop() {
             RusherApocalypseZombie.this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(RUSH_SPEED);
-            rushCooldown = 400;
+            // Shorter Cooldown if Zombie didn't get to its Target
+            if (gotToTarget) {
+                rushCooldown = 400;
+            } else {
+                rushCooldown = 260;
+            }
         }
 
         // Control what happens every tick (0.05s)
@@ -75,7 +82,8 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie {
         @Override
         public boolean canContinueToUse() {
             target = RusherApocalypseZombie.this.getTarget();
-            if (target == null || RusherApocalypseZombie.this.distanceTo(target) < 4) {
+            if (target == null || RusherApocalypseZombie.this.distanceTo(target) < 5) {
+                gotToTarget = true;
                 return false;
             }
             return true;
