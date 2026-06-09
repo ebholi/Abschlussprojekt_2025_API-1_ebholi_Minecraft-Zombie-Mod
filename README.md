@@ -37,7 +37,7 @@ Download the project from [Modrinth](https://modrinth.com) and add it to any **F
 
 ### Manual Install
 
-1. Make sure you have a Modrinth instance named "Mod Environment" running Fabric `1.21.11`.
+1. Make sure you have a Minecraft Instance on the version `1.21.11` with Fabric installed.
 2. Run these commands:
 
 ``` PowerShell
