@@ -27,7 +27,7 @@ The Rusher has a special move. Upon first seeing you, it will charge towards you
 - Speed: 0.26 (Excluding Charge Attack)
 
 Charge:
-- Speed: 0.39 (0.26 * 5)
+- Speed: 0.39 (0.26 * 1.5)
 
 ## Installation
 
