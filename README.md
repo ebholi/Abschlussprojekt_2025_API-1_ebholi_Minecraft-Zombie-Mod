@@ -12,21 +12,22 @@ The Mod currently features two new zombie types, the *Tank* and the *Rusher*
 
 The Tank is a lot bulkier than the average zombie, which is both a benefit and drawback.
 
-- Health: [HIGH]
-- Damage: [HIGH]
-- Knockback: [HIGH]
-- Attack Cooldown: [HIGH]
-- Speed: [LOW]
+- Health: 50 + 8 Armor
+- Damage: 7
+- Knockback: 2
+- Speed: 0.17
 
 ### Rusher
 
 The Rusher has a special move. Upon first seeing you, it will charge towards you at a fast pace.
 
-- Health: [LOW]
-- Damage: [NORMAL]
-- Knockback: [NORMAL]
-- Attack Cooldown [LOW]
-- Speed: [NORMAL] (Excluding Charge Attack)
+- Health: 14
+- Damage: 3
+- Knockback: 0
+- Speed: 0.26 (Excluding Charge Attack)
+
+Charge:
+- Speed: 0.39 (0.26 * 5)
 
 ## Installation
 

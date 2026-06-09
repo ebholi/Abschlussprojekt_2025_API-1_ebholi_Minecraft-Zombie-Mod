@@ -22,7 +22,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie {
     public static AttributeSupplier.Builder createAttributes() {
         return BaseApocalypseZombie.createAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.27)
+                .add(Attributes.MOVEMENT_SPEED, 0.26)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.05)
                 .add(Attributes.ARMOR, 1);
     }
