@@ -37,6 +37,7 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modImplementation "maven.modrinth:geckolib:G1BvHQDL"
 
 	modRuntimeOnly "maven.modrinth:sodium:NFkjnzWE"
 	modRuntimeOnly "maven.modrinth:lithium:Ow7wA0kG"
