@@ -21,7 +21,7 @@ public class TankApocalypseZombie extends BaseApocalypseZombie{
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.3)
                 .add(Attributes.MOVEMENT_SPEED, 0.18)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.3)
-                .add(Attributes.ATTACK_KNOCKBACK, 1.5)
+                .add(Attributes.ATTACK_KNOCKBACK, 2.5)
                 .add(Attributes.ATTACK_DAMAGE, 7)
                 .add(Attributes.STEP_HEIGHT, 1.125)
                 .add(Attributes.SAFE_FALL_DISTANCE, 5)
