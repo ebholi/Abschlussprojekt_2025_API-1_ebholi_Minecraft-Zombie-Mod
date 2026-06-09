@@ -14,6 +14,17 @@ else
     Write-Host "Gradle exited with Code $LASTEXITCODE" -ForegroundColor Red
 }
 
+Write-Host "Updating Dependencies..." -ForegroundColor Cyan
+
+./gradlew dependencies
+
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "Successfully updated dependencies." -ForegroundColor Green
+} else {
+    Write-Host "Failed to update dependencies." -ForegroundColor Red
+    Write-Host "Gradle exited with Code $LASTEXITCODE" -ForegroundColor Red
+}
+
 Write-Host "Launching Minecraft..." -ForegroundColor Cyan
 
 ./gradlew runClient
