@@ -9,8 +9,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class RusherApocalypseZombie extends BaseApocalypseZombie {
+public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoEntity {
     private int rushCooldown = 0; // 400 ticks / 20s of cooldown
 
     public RusherApocalypseZombie(EntityType<? extends Zombie> entityType, Level world) {
@@ -19,12 +24,22 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie {
         this.xpReward += 3;
     }
 
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache((GeoAnimatable) this);
+
     public static AttributeSupplier.Builder createAttributes() {
         return BaseApocalypseZombie.createAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.26)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.05)
                 .add(Attributes.ARMOR, 1);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
     }
 
     // Adds custom Rush Goal
