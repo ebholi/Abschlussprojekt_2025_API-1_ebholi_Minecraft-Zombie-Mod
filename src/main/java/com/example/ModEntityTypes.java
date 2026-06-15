@@ -26,7 +26,8 @@ public class ModEntityTypes {
 
     public static final EntityType<RusherApocalypseZombie> RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE = register(
             "rusher_apocalypse_zombie",
-            EntityType.Builder.<RusherApocalypseZombie>of(RusherApocalypseZombie::new, MobCategory.MONSTER).sized(0.6f, 1.7f)
+            EntityType.Builder.<RusherApocalypseZombie>of(RusherApocalypseZombie::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.7f)
     );
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
