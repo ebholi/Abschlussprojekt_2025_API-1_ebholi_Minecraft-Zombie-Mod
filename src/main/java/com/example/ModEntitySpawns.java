@@ -32,10 +32,8 @@ public class ModEntitySpawns {
                     ENTITIES.get(i).type,
                     SpawnPlacementTypes.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Monster::checkMonsterSpawnRules
+                    BaseApocalypseZombie::checkSpawnRules
             );
-
-
         }
     }
 }

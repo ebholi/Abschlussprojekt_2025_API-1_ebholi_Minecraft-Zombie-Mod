@@ -2,14 +2,18 @@ package com.example;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public class BaseApocalypseZombie extends Zombie {
@@ -87,5 +91,11 @@ public class BaseApocalypseZombie extends Zombie {
     // Helper function since xpReward can't be set un Subclasses of the Base Zombie
     public void reduceXpReward(int amount) {
         this.xpReward = amount;
+    }
+
+    // Custom Spawn Rules to allow daytime spawning
+    public static boolean checkSpawnRules(EntityType<? extends Monster>entityType, ServerLevelAccessor serverLevel, EntitySpawnReason entitySpawnReason, BlockPos pos, RandomSource random) {
+        int blockLight = serverLevel.getBrightness(LightLayer.BLOCK, pos);
+        return blockLight < 11 && serverLevel.getBlockState(pos.below()).isSolid();
     }
 }
