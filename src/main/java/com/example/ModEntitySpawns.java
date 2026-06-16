@@ -34,6 +34,8 @@ public class ModEntitySpawns {
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     Monster::checkMonsterSpawnRules
             );
+
+
         }
     }
 }
