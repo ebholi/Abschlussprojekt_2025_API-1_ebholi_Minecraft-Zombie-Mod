@@ -55,7 +55,7 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
         if (!super.hurtServer(serverLevel, damageSource, f)) {
             return false;
         } else {
-            if (serverLevel.random.nextInt(1) == 0) {
+            if (serverLevel.random.nextInt(5) == 0) {
                 int reinforcementPercent = serverLevel.random.nextInt(100);
                 if (reinforcementPercent < 5) {
                     BaseApocalypseZombie reinforcement = ModEntityTypes.TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE
