@@ -20,7 +20,7 @@ public class BaseApocalypseZombie extends Zombie {
     public BaseApocalypseZombie(EntityType<? extends Zombie> entityType, Level world) {
         super(entityType, world);
 
-        this.xpReward = 2;
+        this.xpReward = 3;
     }
 
     // Burning in the Sun
@@ -29,7 +29,7 @@ public class BaseApocalypseZombie extends Zombie {
         return false;
     }
 
-    // Baby variant
+    // Disabling Baby variant
     @Override
     public void setBaby(boolean bl) {
         super.setBaby(false);
