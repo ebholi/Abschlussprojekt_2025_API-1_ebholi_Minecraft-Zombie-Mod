@@ -1,5 +1,9 @@
 package com.example;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -36,6 +40,34 @@ public class BaseApocalypseZombie extends Zombie {
                 .add(Attributes.MAX_HEALTH, 16)
                 .add(Attributes.STEP_HEIGHT, 0.6)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 0)
-                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, Math.random() * 0.1);
+                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 1);
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
+        if (!super.hurtServer(serverLevel, damageSource, f)) {
+            return false;
+        } else {
+            if (serverLevel.random.nextInt(20) == 0) {
+                BaseApocalypseZombie reinforcement = ModEntityTypes.BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE
+                        .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
+                if (reinforcement != null
+                        && serverLevel.getDifficulty() == Difficulty.HARD
+                        || serverLevel.getDifficulty() == Difficulty.NORMAL) {
+                    reinforcement.setHealth(reinforcement.getHealth() - 2);
+                    reinforcement.setCanPickUpLoot(false);
+                    reinforcement.xpReward -= 2;
+                    reinforcement.setPos(
+                            this.getX() + serverLevel.random.nextInt(7) - serverLevel.random.nextInt(7),
+                            this.getY(),
+                            this.getZ() + serverLevel.random.nextInt(7) - serverLevel.random.nextInt(7)
+                    );
+                    serverLevel.addFreshEntity(reinforcement);
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
