@@ -1,5 +1,6 @@
 package com.example;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 public class BaseApocalypseZombie extends Zombie {
     public BaseApocalypseZombie(EntityType<? extends Zombie> entityType, Level world) {
@@ -43,28 +45,38 @@ public class BaseApocalypseZombie extends Zombie {
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 1);
     }
 
+    // Reinforcement Spawning
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
+        Difficulty difficulty = serverLevel.getDifficulty();
         if (!super.hurtServer(serverLevel, damageSource, f)) {
             return false;
         } else {
-            if (serverLevel.random.nextInt(20) == 0) {
+            if (serverLevel.random.nextInt(10) == 0) {
                 BaseApocalypseZombie reinforcement = ModEntityTypes.BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE
                         .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
                 if (reinforcement != null
-                        && serverLevel.getDifficulty() == Difficulty.HARD
-                        || serverLevel.getDifficulty() == Difficulty.NORMAL) {
-                    reinforcement.setHealth(reinforcement.getHealth() - 2);
-                    reinforcement.setCanPickUpLoot(false);
-                    reinforcement.xpReward -= 2;
-                    reinforcement.setPos(
-                            this.getX() + serverLevel.random.nextInt(7) - serverLevel.random.nextInt(7),
-                            this.getY(),
-                            this.getZ() + serverLevel.random.nextInt(7) - serverLevel.random.nextInt(7)
+                        && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
+                    if (difficulty == Difficulty.NORMAL) {
+                        reinforcement.setHealth(reinforcement.getHealth() - 4);
+                        reinforcement.setCanPickUpLoot(false);
+                        reinforcement.xpReward -= 2;
+                    } else {
+                        reinforcement.setHealth(reinforcement.getHealth() - 2);
+                        reinforcement.xpReward -= 1;
+                    }
+                    // Spawn Position which guarantees that Zombies don't spawn in the floor
+                    BlockPos spawnPos = serverLevel.getHeightmapPos(
+                            Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                            new BlockPos(
+                                    (int) this.getX() + serverLevel.random.nextInt(7) - serverLevel.random.nextInt(7),
+                                    (int) this.getY(),
+                                    (int) this.getZ() + serverLevel.random.nextInt(7) - serverLevel.random.nextInt(7)
+                            )
                     );
+
+                    reinforcement.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
                     serverLevel.addFreshEntity(reinforcement);
-                } else {
-                    return false;
                 }
             }
             return true;
