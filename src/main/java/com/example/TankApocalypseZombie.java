@@ -1,10 +1,16 @@
 package com.example;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -14,7 +20,8 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     public TankApocalypseZombie(EntityType<? extends Zombie> entityType, Level world) {
         super(entityType, world);
 
-        this.xpReward+= 12;
+        this.xpReward = 17;
+        this.spawnBaseReinforcements = false;
     }
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
@@ -34,10 +41,64 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return geoCache;
+    }
+
+    // Reinforcement Spawning
+    @Override
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
+        if (!super.hurtServer(serverLevel, damageSource, f)) {
+            return false;
+        } else {
+            if (serverLevel.random.nextInt(1) == 0) {
+                int reinforcementPercent = serverLevel.random.nextInt(100);
+                if (reinforcementPercent < 5) {
+                    BaseApocalypseZombie reinforcement = ModEntityTypes.TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE
+                            .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
+                    verifyReinforcement(serverLevel, reinforcement);
+                } else if (reinforcementPercent > 5 && reinforcementPercent < 40) {
+                    BaseApocalypseZombie reinforcement = ModEntityTypes.RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE
+                            .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
+                    verifyReinforcement(serverLevel, reinforcement);
+                } else {
+                    BaseApocalypseZombie reinforcement = ModEntityTypes.BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE
+                            .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
+                    verifyReinforcement(serverLevel, reinforcement);
+                }
+            }
+        }
+        return true;
+    }
+
+    private void verifyReinforcement(ServerLevel serverLevel, BaseApocalypseZombie reinforcement) {
+        Difficulty difficulty = serverLevel.getDifficulty();
+        if (reinforcement != null
+                && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
+            if (difficulty == Difficulty.NORMAL) {
+                reinforcement.setHealth(reinforcement.getHealth() - 4);
+                reinforcement.setCanPickUpLoot(false);
+                reinforcement.reduceXpReward(3);
+            } else {
+                reinforcement.setHealth(reinforcement.getHealth() - 2);
+                reinforcement.reduceXpReward(1);
+            }
+            // Spawn Position which guarantees that Zombies don't spawn in the floor
+            BlockPos spawnPos = serverLevel.getHeightmapPos(
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    new BlockPos(
+                            (int) this.getX() + serverLevel.random.nextInt(21) - serverLevel.random.nextInt(21),
+                            (int) this.getY(),
+                            (int) this.getZ() + serverLevel.random.nextInt(21) - serverLevel.random.nextInt(21)
+                    )
+            );
+
+            reinforcement.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+            serverLevel.addFreshEntity(reinforcement);
+        }
     }
 }
