@@ -17,9 +17,9 @@ public class ModEntitySpawns {
     private record SpawnEntry(EntityType<? extends Monster> type, int weight, int min, int max) {}
 
     private static final List<SpawnEntry> ENTITIES = List.of(
-            new SpawnEntry(ModEntityTypes.BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE, 200, 2, 7),
-            new SpawnEntry(ModEntityTypes.RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE, 90, 1, 4),
-            new SpawnEntry(ModEntityTypes.TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE, 40, 1, 2)
+            new SpawnEntry(ModEntityTypes.BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE, 350, 2, 7),
+            new SpawnEntry(ModEntityTypes.RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE, 180, 1, 4),
+            new SpawnEntry(ModEntityTypes.TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE, 100, 1, 2)
     );
 
     public static void addSpawns() {
