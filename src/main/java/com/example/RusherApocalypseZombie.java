@@ -1,6 +1,11 @@
 package com.example;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -9,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -21,7 +27,8 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     public RusherApocalypseZombie(EntityType<? extends Zombie> entityType, Level world) {
         super(entityType, world);
 
-        this.xpReward += 3;
+        this.xpReward = 6;
+        this.spawnBaseReinforcements = false;
     }
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache((GeoAnimatable) this);
@@ -30,7 +37,6 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         return BaseApocalypseZombie.createAttributes()
                 .add(Attributes.MAX_HEALTH, 14.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.26)
-                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.05)
                 .add(Attributes.ARMOR, 1);
     }
 
@@ -111,6 +117,44 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         super.tick();
         if (rushCooldown > 0) {
             rushCooldown--;
+        }
+    }
+
+    // Reinforcement Spawning
+    @Override
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
+        Difficulty difficulty = serverLevel.getDifficulty();
+        if (!super.hurtServer(serverLevel, damageSource, f)) {
+            return false;
+        } else {
+            if (serverLevel.random.nextInt(12) == 0) {
+                BaseApocalypseZombie reinforcement = ModEntityTypes.RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE
+                        .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
+                if (reinforcement != null
+                        && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
+                    if (difficulty == Difficulty.NORMAL) {
+                        reinforcement.setHealth(reinforcement.getHealth() - 4);
+                        reinforcement.setCanPickUpLoot(false);
+                        reinforcement.reduceXpReward(3);
+                    } else {
+                        reinforcement.setHealth(reinforcement.getHealth() - 2);
+                        reinforcement.reduceXpReward(1);
+                    }
+                    // Spawn Position which guarantees that Zombies don't spawn in the floor
+                    BlockPos spawnPos = serverLevel.getHeightmapPos(
+                            Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                            new BlockPos(
+                                    (int) this.getX() + serverLevel.random.nextInt(21) - serverLevel.random.nextInt(21),
+                                    (int) this.getY(),
+                                    (int) this.getZ() + serverLevel.random.nextInt(21) - serverLevel.random.nextInt(21)
+                            )
+                    );
+
+                    reinforcement.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+                    serverLevel.addFreshEntity(reinforcement);
+                }
+            }
+            return true;
         }
     }
 }

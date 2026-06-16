@@ -41,18 +41,19 @@ public class BaseApocalypseZombie extends Zombie {
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, 16)
                 .add(Attributes.STEP_HEIGHT, 0.6)
-                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 0)
-                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 1);
+                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 0);
     }
 
     // Reinforcement Spawning
+    protected boolean spawnBaseReinforcements = true;
+
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
         Difficulty difficulty = serverLevel.getDifficulty();
         if (!super.hurtServer(serverLevel, damageSource, f)) {
             return false;
         } else {
-            if (serverLevel.random.nextInt(10) == 0) {
+            if (spawnBaseReinforcements && serverLevel.random.nextInt(10) == 0) {
                 BaseApocalypseZombie reinforcement = ModEntityTypes.BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE
                         .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
                 if (reinforcement != null
@@ -69,9 +70,9 @@ public class BaseApocalypseZombie extends Zombie {
                     BlockPos spawnPos = serverLevel.getHeightmapPos(
                             Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                             new BlockPos(
-                                    (int) this.getX() + serverLevel.random.nextInt(7) - serverLevel.random.nextInt(7),
+                                    (int) this.getX() + serverLevel.random.nextInt(21) - serverLevel.random.nextInt(21),
                                     (int) this.getY(),
-                                    (int) this.getZ() + serverLevel.random.nextInt(7) - serverLevel.random.nextInt(7)
+                                    (int) this.getZ() + serverLevel.random.nextInt(21) - serverLevel.random.nextInt(21)
                             )
                     );
 
@@ -81,5 +82,10 @@ public class BaseApocalypseZombie extends Zombie {
             }
             return true;
         }
+    }
+
+    // Helper function since xpReward can't be set un Subclasses of the Base Zombie
+    public void reduceXpReward(int amount) {
+        this.xpReward = amount;
     }
 }
