@@ -19,8 +19,12 @@ public class ExampleMod implements ModInitializer {
         // However, some things (like resources) may still be uninitialized.
         // Proceed with mild caution.
 
+        LOGGER.info("Initializing y_apocalypse_zombies Entity Types");
         ModEntityTypes.registerModEntityTypes();
+        LOGGER.info("Initializing y_apocalypse_zombies Attributes");
         ModEntityTypes.registerYZombieAttributes();
+        LOGGER.info("Initializing y_apocalypse_zombies Spawn Spawn Rules");
+        ModEntitySpawns.addSpawns();
 
         LOGGER.info("Hello Fabric world!");
     }
