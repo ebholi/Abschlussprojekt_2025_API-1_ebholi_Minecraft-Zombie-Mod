@@ -22,7 +22,7 @@ public class ModEntitySpawns {
     );
 
     public static void addSpawns() {
-        for (int i = 0; i < ENTITIES.size(); ++i) {
+        for (int i = 0; i < ENTITIES.size(); i++) {
             BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(),
                     MobCategory.MONSTER, ENTITIES.get(i).type,
                     ENTITIES.get(i).weight, ENTITIES.get(i).min, ENTITIES.get(i).max);
