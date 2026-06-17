@@ -6,6 +6,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.zombie.Zombie;
@@ -54,8 +55,10 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
         if (!super.hurtServer(serverLevel, damageSource, f)) {
             return false;
+        } else if (!(damageSource.getEntity() instanceof LivingEntity)) {
+            return true;
         } else {
-            if (serverLevel.random.nextInt(5) == 0) {
+            if (serverLevel.random.nextInt(4) == 0) {
                 int reinforcementPercent = serverLevel.random.nextInt(100);
                 if (reinforcementPercent < 5) {
                     BaseApocalypseZombie reinforcement = ModEntityTypes.TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE
@@ -80,11 +83,9 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
         if (reinforcement != null
                 && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
             if (difficulty == Difficulty.NORMAL) {
-                reinforcement.setHealth(reinforcement.getHealth() - 4);
                 reinforcement.setCanPickUpLoot(false);
                 reinforcement.reduceXpReward(3);
             } else {
-                reinforcement.setHealth(reinforcement.getHealth() - 2);
                 reinforcement.reduceXpReward(1);
             }
             // Spawn Position which guarantees that Zombies don't spawn in the floor

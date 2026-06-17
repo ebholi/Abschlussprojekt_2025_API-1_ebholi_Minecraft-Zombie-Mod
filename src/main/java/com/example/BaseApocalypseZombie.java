@@ -1,5 +1,6 @@
 package com.example;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -7,6 +8,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -49,13 +51,17 @@ public class BaseApocalypseZombie extends Zombie {
     }
 
     // Reinforcement Spawning
+    // Prevents Base Reinforcements from spawning when other Zombies which Extend this one are hurt
     protected boolean spawnBaseReinforcements = true;
 
     @Override
-    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float damage) {
         Difficulty difficulty = serverLevel.getDifficulty();
-        if (!super.hurtServer(serverLevel, damageSource, f)) {
+        if (!super.hurtServer(serverLevel, damageSource, damage)) {
             return false;
+        } else if (!(damageSource.getEntity() instanceof LivingEntity)) {
+            // Cancels Reinforcement Logic if the damage source isn't a living entity like a Player or Iron Golem
+            return true;
         } else {
             if (spawnBaseReinforcements && serverLevel.random.nextInt(10) == 0) {
                 BaseApocalypseZombie reinforcement = ModEntityTypes.BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE
@@ -63,6 +69,7 @@ public class BaseApocalypseZombie extends Zombie {
                 if (reinforcement != null
                         && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
                     if (difficulty == Difficulty.NORMAL) {
+                        // Reinforcements are slightly weaker
                         reinforcement.setHealth(reinforcement.getHealth() - 4);
                         reinforcement.setCanPickUpLoot(false);
                         reinforcement.xpReward -= 2;
@@ -88,7 +95,7 @@ public class BaseApocalypseZombie extends Zombie {
         }
     }
 
-    // Helper function since xpReward can't be set un Subclasses of the Base Zombie
+    // Helper function since xpReward can't be set on Subclasses of the Base Zombie
     public void reduceXpReward(int amount) {
         this.xpReward = amount;
     }

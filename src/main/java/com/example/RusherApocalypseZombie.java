@@ -126,6 +126,8 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         Difficulty difficulty = serverLevel.getDifficulty();
         if (!super.hurtServer(serverLevel, damageSource, f)) {
             return false;
+        } else if (!(damageSource.getEntity() instanceof LivingEntity)) {
+            return true;
         } else {
             if (serverLevel.random.nextInt(12) == 0) {
                 BaseApocalypseZombie reinforcement = ModEntityTypes.RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE
