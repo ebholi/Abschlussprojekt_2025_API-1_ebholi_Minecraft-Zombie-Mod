@@ -42,8 +42,7 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
