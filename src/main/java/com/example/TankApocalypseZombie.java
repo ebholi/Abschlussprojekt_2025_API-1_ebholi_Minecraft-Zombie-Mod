@@ -49,11 +49,10 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     // Animations
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>("walk", 0, this::walkAnimController));
+        controllers.add(new AnimationController<>("walk", 2, this::walkAnimController));
     }
 
     protected PlayState walkAnimController(AnimationTest<TankApocalypseZombie> test) {
-        System.out.println("isMoving: " + test.isMoving());
         if (test.isMoving()) {
             return test.setAndContinue(RawAnimation.begin().thenLoop("walk_loop"));
         }
