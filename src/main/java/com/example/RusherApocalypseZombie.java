@@ -1,6 +1,9 @@
 package com.example;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
@@ -19,6 +22,10 @@ import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.object.PlayState;
+import software.bernie.geckolib.animation.state.AnimationTest;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoEntity {
@@ -40,8 +47,44 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
                 .add(Attributes.ARMOR, 1);
     }
 
+    private static final EntityDataAccessor<Boolean> IS_RUSHING =
+            SynchedEntityData.defineId(RusherApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
+
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(IS_RUSHING, false);
+    }
+
+    public void setRushing(boolean value) {
+        this.entityData.set(IS_RUSHING, value);
+    }
+
+    public boolean isRushing() {
+        return this.entityData.get(IS_RUSHING);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>("walk", 2, this::walkAnimController));
+        controllers.add(new AnimationController<>("rush", 2, this::rushAnimController));
+    }
+
+    protected PlayState walkAnimController(AnimationTest<RusherApocalypseZombie> rusher) {
+        if (rusher.isMoving()) {
+            return rusher.setAndContinue(RawAnimation.begin().thenLoop("walk_loop"));
+        }
+        rusher.controller().reset();
+        return PlayState.STOP;
+    }
+
+    protected PlayState rushAnimController(AnimationTest<RusherApocalypseZombie> rusher) {
+        if (rusher.isMoving() && this.isRushing()) {
+            return rusher.setAndContinue(RawAnimation.begin().thenLoop("rush_loop"));
+        }
+        rusher.controller().reset();
+        return PlayState.STOP;
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -70,6 +113,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
 
         @Override
         public void start() {
+            RusherApocalypseZombie.this.setRushing(true);
             gotToTarget = false;
             RusherApocalypseZombie.this.getAttribute(Attributes.MOVEMENT_SPEED).addOrReplacePermanentModifier(
                     new AttributeModifier(
@@ -83,6 +127,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         @Override
         public void stop() {
             RusherApocalypseZombie.this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(RUSH_SPEED);
+            RusherApocalypseZombie.this.setRushing(false);
             // Shorter Cooldown if Zombie didn't get to its Target
             if (gotToTarget) {
                 rushCooldown = 400;
