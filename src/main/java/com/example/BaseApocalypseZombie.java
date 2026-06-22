@@ -1,7 +1,7 @@
 package com.example;
 
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -35,6 +35,12 @@ public class BaseApocalypseZombie extends Zombie {
     @Override
     public void setBaby(boolean bl) {
         super.setBaby(false);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        // any base-zombie-wide synced fields can go here if needed
     }
 
     public static AttributeSupplier.Builder createAttributes() {

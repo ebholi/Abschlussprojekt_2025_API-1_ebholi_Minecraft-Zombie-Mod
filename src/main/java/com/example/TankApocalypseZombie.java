@@ -1,6 +1,9 @@
 package com.example;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,7 +15,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
-import org.jetbrains.annotations.UnknownNullability;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -46,15 +48,42 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
                 .add(Attributes.MAX_HEALTH, 50);
     }
 
+    // Data Field to send Server Target Information to the Client
+    private static final EntityDataAccessor<Boolean> HAS_TARGET =
+            SynchedEntityData.defineId(TankApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(HAS_TARGET, false);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide()) {
+            this.entityData.set(HAS_TARGET, this.getTarget() != null);
+        }
+    }
+
     // Animations
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>("walk", 2, this::walkAnimController));
+        controllers.add(new AnimationController<>("aggro_walk", 2, this::aggroWalkAnimController));
     }
 
     protected PlayState walkAnimController(AnimationTest<TankApocalypseZombie> test) {
         if (test.isMoving()) {
             return test.setAndContinue(RawAnimation.begin().thenLoop("walk_loop"));
+        }
+        test.controller().reset();
+        return PlayState.STOP;
+    }
+
+    protected PlayState aggroWalkAnimController(AnimationTest<TankApocalypseZombie> test) {
+        if (this.entityData.get(HAS_TARGET)) {
+            return test.setAndContinue(RawAnimation.begin().thenLoop("aggro_walk_loop"));
         }
         test.controller().reset();
         return PlayState.STOP;
@@ -70,7 +99,7 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
         if (!super.hurtServer(serverLevel, damageSource, f)) {
             return false;
-        } else if (!(damageSource.getEntity() instanceof LivingEntity)) {
+        } else if (!(damageSource.getEntity() instanceof LivingEntity) || this.isReinforcement()) {
             return true;
         } else {
             if (serverLevel.random.nextInt(4) == 0) {
@@ -97,6 +126,7 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
         Difficulty difficulty = serverLevel.getDifficulty();
         if (reinforcement != null
                 && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
+            reinforcement.setIsReinforcement(true);
             if (difficulty == Difficulty.NORMAL) {
                 reinforcement.setCanPickUpLoot(false);
                 reinforcement.reduceXpReward(3);
