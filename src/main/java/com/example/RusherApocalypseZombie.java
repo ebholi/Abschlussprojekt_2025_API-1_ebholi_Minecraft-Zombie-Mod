@@ -126,7 +126,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         Difficulty difficulty = serverLevel.getDifficulty();
         if (!super.hurtServer(serverLevel, damageSource, f)) {
             return false;
-        } else if (!(damageSource.getEntity() instanceof LivingEntity)) {
+        } else if (!(damageSource.getEntity() instanceof LivingEntity) || this.isReinforcement()) {
             return true;
         } else {
             if (serverLevel.random.nextInt(12) == 0) {
@@ -134,6 +134,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
                         .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
                 if (reinforcement != null
                         && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
+                    reinforcement.setIsReinforcement(true);
                     if (difficulty == Difficulty.NORMAL) {
                         reinforcement.setHealth(reinforcement.getHealth() - 4);
                         reinforcement.setCanPickUpLoot(false);

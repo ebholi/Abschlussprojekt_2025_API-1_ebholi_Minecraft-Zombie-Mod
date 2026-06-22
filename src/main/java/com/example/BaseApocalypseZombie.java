@@ -59,7 +59,7 @@ public class BaseApocalypseZombie extends Zombie {
         Difficulty difficulty = serverLevel.getDifficulty();
         if (!super.hurtServer(serverLevel, damageSource, damage)) {
             return false;
-        } else if (!(damageSource.getEntity() instanceof LivingEntity)) {
+        } else if (!(damageSource.getEntity() instanceof LivingEntity) || this.isReinforcement()) {
             // Cancels Reinforcement Logic if the damage source isn't a living entity like a Player or Iron Golem
             return true;
         } else {
@@ -68,6 +68,8 @@ public class BaseApocalypseZombie extends Zombie {
                         .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
                 if (reinforcement != null
                         && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
+                    // Reinforcements can't spawn more reinforcements
+                    reinforcement.setIsReinforcement(true);
                     if (difficulty == Difficulty.NORMAL) {
                         // Reinforcements are slightly weaker
                         reinforcement.setHealth(reinforcement.getHealth() - 4);
@@ -104,5 +106,17 @@ public class BaseApocalypseZombie extends Zombie {
     public static boolean checkSpawnRules(EntityType<? extends Monster>entityType, ServerLevelAccessor serverLevel, EntitySpawnReason entitySpawnReason, BlockPos pos, RandomSource random) {
         int blockLight = serverLevel.getBrightness(LightLayer.BLOCK, pos);
         return blockLight < 11 && serverLevel.getBlockState(pos.below()).isSolid();
+    }
+
+    // Reinforcement Logic
+    // Reinforcements shouldn't be able to spawn more Reinforcements
+    private boolean isReinforcement = false;
+
+    public void setIsReinforcement(boolean value) {
+        this.isReinforcement = value;
+    }
+
+    public boolean isReinforcement() {
+        return this.isReinforcement;
     }
 }
