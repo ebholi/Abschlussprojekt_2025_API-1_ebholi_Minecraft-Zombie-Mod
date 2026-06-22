@@ -53,4 +53,4 @@ cd Abschlussprojekt_2025_API-1_ebholi_Minecraft-Zombie-Mod
 
 ## Scripts
 
-This project includes three scripts to aid development. If you want to install the scripts, you can download them in this [repository](https://github.com/Yooli8537/Minecraft-Fabric-1.21.11-Development-Scripts).
+This project includes three scripts to aid development. If you want to install the scripts, you can download them from this [repository](https://github.com/Yooli8537/Minecraft-Fabric-1.21.11-Development-Scripts).
