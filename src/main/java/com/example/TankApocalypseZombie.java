@@ -12,9 +12,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
+import org.jetbrains.annotations.UnknownNullability;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.object.PlayState;
+import software.bernie.geckolib.animation.state.AnimationTest;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEntity {
@@ -41,12 +46,24 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
                 .add(Attributes.MAX_HEALTH, 50);
     }
 
+    // Animations
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>("walk", 0, this::walkAnimController));
+    }
+
+    protected PlayState walkAnimController(AnimationTest<TankApocalypseZombie> test) {
+        System.out.println("isMoving: " + test.isMoving());
+        if (test.isMoving()) {
+            return test.setAndContinue(RawAnimation.begin().thenLoop("walk_loop"));
+        }
+        test.controller().reset();
+        return PlayState.STOP;
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return geoCache;
+        return this.geoCache;
     }
 
     // Reinforcement Spawning
