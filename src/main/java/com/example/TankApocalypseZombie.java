@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,10 +53,14 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     private static final EntityDataAccessor<Boolean> HAS_TARGET =
             SynchedEntityData.defineId(TankApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
 
+    private static final EntityDataAccessor<Boolean> DID_HURT_TARGET =
+            SynchedEntityData.defineId(TankApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
+
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(HAS_TARGET, false);
+        builder.define(DID_HURT_TARGET, false);
     }
 
     @Override
@@ -66,26 +71,42 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
         }
     }
 
+    @Override
+    public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
+        boolean value = super.doHurtTarget(serverLevel, target);
+        this.entityData.set(DID_HURT_TARGET, value);
+        return value;
+    }
+
     // Animations
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>("walk", 2, this::walkAnimController));
         controllers.add(new AnimationController<>("aggro_walk", 2, this::aggroWalkAnimController));
+        controllers.add(new AnimationController<>("attack", 0, this::attackAnimController));
     }
 
-    protected PlayState walkAnimController(AnimationTest<TankApocalypseZombie> test) {
-        if (test.isMoving()) {
-            return test.setAndContinue(RawAnimation.begin().thenLoop("walk_loop"));
+    protected PlayState walkAnimController(AnimationTest<TankApocalypseZombie> tank) {
+        if (tank.isMoving()) {
+            return tank.setAndContinue(RawAnimation.begin().thenLoop("walk_loop"));
         }
-        test.controller().reset();
+        tank.controller().reset();
         return PlayState.STOP;
     }
 
-    protected PlayState aggroWalkAnimController(AnimationTest<TankApocalypseZombie> test) {
+    protected PlayState aggroWalkAnimController(AnimationTest<TankApocalypseZombie> tank) {
         if (this.entityData.get(HAS_TARGET)) {
-            return test.setAndContinue(RawAnimation.begin().thenLoop("aggro_walk_loop"));
+            return tank.setAndContinue(RawAnimation.begin().thenLoop("aggro_walk_loop"));
         }
-        test.controller().reset();
+        tank.controller().reset();
+        return PlayState.STOP;
+    }
+
+    protected PlayState attackAnimController(AnimationTest<TankApocalypseZombie> tank) {
+        if (this.entityData.get(DID_HURT_TARGET)) {
+            return tank.setAndContinue(RawAnimation.begin().thenPlay("attack"));
+        }
+        tank.controller().reset();
         return PlayState.STOP;
     }
 
