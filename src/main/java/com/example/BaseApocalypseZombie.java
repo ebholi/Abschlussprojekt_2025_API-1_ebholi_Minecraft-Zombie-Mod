@@ -95,7 +95,7 @@ public class BaseApocalypseZombie extends Zombie {
         }
     }
 
-    // Helper function since xpReward can't be set on Subclasses of the Base Zombie
+    // Helper function since xpReward can't be set on Reinforcements of the Base Zombie
     public void reduceXpReward(int amount) {
         this.xpReward = amount;
     }
