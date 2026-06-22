@@ -51,14 +51,10 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     private static final EntityDataAccessor<Boolean> IS_RUSHING =
             SynchedEntityData.defineId(RusherApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
 
-    private static final EntityDataAccessor<Boolean> DID_HURT_TARGET =
-            SynchedEntityData.defineId(RusherApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(IS_RUSHING, false);
-        builder.define(DID_HURT_TARGET, false);
     }
 
     public void setRushing(boolean value) {
@@ -72,7 +68,9 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     @Override
     public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
         boolean value = super.doHurtTarget(serverLevel, target);
-        this.entityData.set(DID_HURT_TARGET, value);
+        if (value) {
+            this.triggerAnim("attack", "attack");
+        }
         return value;
     }
 
@@ -80,7 +78,8 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>("walk", 2, this::walkAnimController));
         controllers.add(new AnimationController<>("rush", 2, this::rushAnimController));
-        controllers.add(new AnimationController<>("attack", 0, this::attackAnimController));
+        controllers.add(new AnimationController<>("attack", 0, animTest -> PlayState.STOP)
+                .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
     }
 
     protected PlayState walkAnimController(AnimationTest<RusherApocalypseZombie> rusher) {
@@ -96,14 +95,6 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
             return rusher.setAndContinue(RawAnimation.begin().thenLoop("rush_loop"));
         }
         rusher.controller().reset();
-        return PlayState.STOP;
-    }
-
-    protected PlayState attackAnimController(AnimationTest<TankApocalypseZombie> tank) {
-        if (this.entityData.get(DID_HURT_TARGET)) {
-            return tank.setAndContinue(RawAnimation.begin().thenPlay("rush_loop"));
-        }
-        tank.controller().reset();
         return PlayState.STOP;
     }
 

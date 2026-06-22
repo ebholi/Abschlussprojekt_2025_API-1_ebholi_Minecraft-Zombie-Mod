@@ -23,6 +23,7 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.animation.object.PlayState;
 import software.bernie.geckolib.animation.state.AnimationTest;
+import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEntity {
@@ -53,14 +54,10 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     private static final EntityDataAccessor<Boolean> HAS_TARGET =
             SynchedEntityData.defineId(TankApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
 
-    private static final EntityDataAccessor<Boolean> DID_HURT_TARGET =
-            SynchedEntityData.defineId(TankApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(HAS_TARGET, false);
-        builder.define(DID_HURT_TARGET, false);
     }
 
     @Override
@@ -74,7 +71,9 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     @Override
     public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
         boolean value = super.doHurtTarget(serverLevel, target);
-        this.entityData.set(DID_HURT_TARGET, value);
+        if (value) {
+            this.triggerAnim("attack", "attack");
+        }
         return value;
     }
 
@@ -83,7 +82,8 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>("walk", 2, this::walkAnimController));
         controllers.add(new AnimationController<>("aggro_walk", 2, this::aggroWalkAnimController));
-        controllers.add(new AnimationController<>("attack", 0, this::attackAnimController));
+        controllers.add(new AnimationController<>("attack", 0, animTest -> PlayState.STOP)
+                .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
     }
 
     protected PlayState walkAnimController(AnimationTest<TankApocalypseZombie> tank) {
@@ -97,14 +97,6 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     protected PlayState aggroWalkAnimController(AnimationTest<TankApocalypseZombie> tank) {
         if (this.entityData.get(HAS_TARGET)) {
             return tank.setAndContinue(RawAnimation.begin().thenLoop("aggro_walk_loop"));
-        }
-        tank.controller().reset();
-        return PlayState.STOP;
-    }
-
-    protected PlayState attackAnimController(AnimationTest<TankApocalypseZombie> tank) {
-        if (this.entityData.get(DID_HURT_TARGET)) {
-            return tank.setAndContinue(RawAnimation.begin().thenPlay("attack"));
         }
         tank.controller().reset();
         return PlayState.STOP;
