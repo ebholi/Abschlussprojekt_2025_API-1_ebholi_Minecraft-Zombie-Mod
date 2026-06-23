@@ -20,16 +20,9 @@
       "com.example.ExampleMod"
     ],
     "client": [
-      "com.example.client.ExampleModClient"
+      "com.y_apocalypse_zombies.client.ModClient"
     ]
   },
-  "mixins": [
-    "modid.mixins.json",
-    {
-      "config": "modid.client.mixins.json",
-      "environment": "client"
-    }
-  ],
   "depends": {
     "fabricloader": ">=0.19.2",
     "minecraft": "~1.21.11",
