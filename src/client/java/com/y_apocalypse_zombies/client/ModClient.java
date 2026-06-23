@@ -1,3 +1,10 @@
+/**
+ * Author: Oliver Ebhardt
+ * Created: 01.06.2026
+ * Version: 0.2.1
+ * Description: Client Side Mod mainly used to Register Entities to be rendered.
+ */
+
 package com.y_apocalypse_zombies.client;
 
 import com.y_apocalypse_zombies.ModEntityTypes;

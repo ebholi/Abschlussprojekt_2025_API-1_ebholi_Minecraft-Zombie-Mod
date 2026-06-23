@@ -1,3 +1,10 @@
+/**
+ * Author: Oliver Ebhardt
+ * Created: 03.06.2026
+ * Version: 0.2.1
+ * Description: Tank Zombie
+ */
+
 package com.y_apocalypse_zombies;
 
 import net.minecraft.core.BlockPos;

@@ -1,3 +1,10 @@
+/**
+ * Author: Oliver Ebhardt
+ * Created: 16.06.2026
+ * Version: 0.2.1
+ * Description: Controls the natural Spawning of the custom Zombies.
+ */
+
 package com.y_apocalypse_zombies;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;

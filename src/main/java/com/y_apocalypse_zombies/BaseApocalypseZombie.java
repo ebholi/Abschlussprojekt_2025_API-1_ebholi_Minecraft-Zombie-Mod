@@ -1,7 +1,13 @@
+/**
+ * Author: Oliver Ebhardt
+ * Created: 03.06.2026
+ * Version: 0.2.1
+ * Description: Base Zombie Class used for other Zombie Types.
+ */
+
 package com.y_apocalypse_zombies;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;

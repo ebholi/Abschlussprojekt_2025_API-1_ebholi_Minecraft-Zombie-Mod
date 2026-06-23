@@ -1,3 +1,10 @@
+/**
+ * Author: Oliver Ebhardt
+ * Created: 08.06.2026
+ * Version: 0.2.1
+ * Description: Rusher Zombie Type with his own Ability implemented using a Goal.
+ */
+
 package com.y_apocalypse_zombies;
 
 import net.minecraft.core.BlockPos;

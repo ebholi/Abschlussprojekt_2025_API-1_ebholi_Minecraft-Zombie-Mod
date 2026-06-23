@@ -1,3 +1,10 @@
+/**
+ * Author: Oliver Ebhardt
+ * Created: 01.06.2026
+ * Version: 0.2.1
+ * Description: Registers things added to the Mod. For this one, it's all Entities.
+ */
+
 package com.y_apocalypse_zombies;
 
 import net.fabricmc.api.ModInitializer;

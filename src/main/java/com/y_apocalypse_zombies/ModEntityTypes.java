@@ -1,3 +1,10 @@
+/**
+ * Author: Oliver Ebhardt
+ * Created: 03.06.2026
+ * Version: 0.2.1
+ * Description: Defines Builders for custom Entities & registers their Attributes.
+ */
+
 package com.y_apocalypse_zombies;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
