@@ -18,6 +18,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 
+// Base Zombie which the other Zombies base their Stats & Behaviors on
 public class BaseApocalypseZombie extends Zombie {
     public BaseApocalypseZombie(EntityType<? extends Zombie> entityType, Level world) {
         super(entityType, world);
@@ -25,7 +26,7 @@ public class BaseApocalypseZombie extends Zombie {
         this.xpReward = 3;
     }
 
-    // Burning in the Sun
+    // Burning in the Sun is disabled
     @Override
     public boolean isSunSensitive() {
         return false;
@@ -37,12 +38,7 @@ public class BaseApocalypseZombie extends Zombie {
         super.setBaby(false);
     }
 
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        // any base-zombie-wide synced fields can go here if needed
-    }
-
+    // Default Attributes for the Apocalypse Zombies
     public static AttributeSupplier.Builder createAttributes() {
         return Zombie.createAttributes()
                 .add(Attributes.ARMOR, 2)
@@ -60,15 +56,18 @@ public class BaseApocalypseZombie extends Zombie {
     // Prevents Base Reinforcements from spawning when other Zombies which Extend this one are hurt
     protected boolean spawnBaseReinforcements = true;
 
+    // Functions which are activated when taking Damage
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float damage) {
         Difficulty difficulty = serverLevel.getDifficulty();
         if (!super.hurtServer(serverLevel, damageSource, damage)) {
+            // Returns nothing if no damage was taken
             return false;
         } else if (!(damageSource.getEntity() instanceof LivingEntity) || this.isReinforcement()) {
-            // Cancels Reinforcement Logic if the damage source isn't a living entity like a Player or Iron Golem
+            // Cancels Reinforcement Logic if the damage source isn't a living Entity like a Player or Iron Golem
             return true;
         } else {
+            // 1 in 10 Chance of spawning a Reinforcement
             if (spawnBaseReinforcements && serverLevel.random.nextInt(10) == 0) {
                 BaseApocalypseZombie reinforcement = ModEntityTypes.BASE_APOCALYPSE_ZOMBIE_ENTITY_TYPE
                         .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
@@ -94,7 +93,7 @@ public class BaseApocalypseZombie extends Zombie {
                                     (int) this.getZ() + serverLevel.random.nextInt(21) - serverLevel.random.nextInt(21)
                             )
                     );
-
+                    // Spawning the Reinforcement in the World
                     reinforcement.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
                     serverLevel.addFreshEntity(reinforcement);
                 }
@@ -103,25 +102,24 @@ public class BaseApocalypseZombie extends Zombie {
         }
     }
 
-    // Helper function since xpReward can't be set on Reinforcements of the Base Zombie
+    // Helper function since xpReward can't be set on Reinforcements outside the Base Zombie
     public void reduceXpReward(int amount) {
         this.xpReward = amount;
     }
 
-    // Custom Spawn Rules to allow daytime spawning
+    // Custom Spawn Rules to allow Daytime spawning
     public static boolean checkSpawnRules(EntityType<? extends Monster>entityType, ServerLevelAccessor serverLevel, EntitySpawnReason entitySpawnReason, BlockPos pos, RandomSource random) {
         int blockLight = serverLevel.getBrightness(LightLayer.BLOCK, pos);
         return blockLight < 11 && serverLevel.getBlockState(pos.below()).isSolid();
     }
 
-    // Reinforcement Logic
     // Reinforcements shouldn't be able to spawn more Reinforcements
     private boolean isReinforcement = false;
 
+    // Funtions to set an Entity as a Reinforcement & get the Value.
     public void setIsReinforcement(boolean value) {
         this.isReinforcement = value;
     }
-
     public boolean isReinforcement() {
         return this.isReinforcement;
     }
