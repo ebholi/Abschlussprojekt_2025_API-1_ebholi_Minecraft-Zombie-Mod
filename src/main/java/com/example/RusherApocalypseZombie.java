@@ -51,10 +51,14 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     private static final EntityDataAccessor<Boolean> IS_RUSHING =
             SynchedEntityData.defineId(RusherApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
 
+    private static final EntityDataAccessor<Boolean> HIT_RUSH =
+            SynchedEntityData.defineId(RusherApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
+
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(IS_RUSHING, false);
+        builder.define(HIT_RUSH, false);
     }
 
     public void setRushing(boolean value) {
@@ -65,11 +69,22 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         return this.entityData.get(IS_RUSHING);
     }
 
+    public void setHitRush(boolean value) {
+        this.entityData.set(HIT_RUSH, value);
+    }
+
+    public boolean isHitRush() {
+        return this.entityData.get(HIT_RUSH);
+    }
+
     @Override
     public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
         boolean value = super.doHurtTarget(serverLevel, target);
         if (value) {
             this.triggerAnim("attack", "attack");
+        }
+        if (isRushing()) {
+            this.entityData.set(HIT_RUSH, true);
         }
         return value;
     }
@@ -160,8 +175,9 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         @Override
         public boolean canContinueToUse() {
             target = RusherApocalypseZombie.this.getTarget();
-            if (target == null || RusherApocalypseZombie.this.distanceTo(target) < 4) {
+            if (target == null || isHitRush() || !isRushing()) {
                 gotToTarget = true;
+                setHitRush(false);
                 return false;
             }
             return true;
@@ -186,6 +202,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         } else if (!(damageSource.getEntity() instanceof LivingEntity) || this.isReinforcement()) {
             return true;
         } else {
+            setRushing(false);
             if (serverLevel.random.nextInt(12) == 0) {
                 BaseApocalypseZombie reinforcement = ModEntityTypes.RUSHER_APOCALYPSE_ZOMBIE_ENTITY_TYPE
                         .create(serverLevel, EntitySpawnReason.REINFORCEMENT);
