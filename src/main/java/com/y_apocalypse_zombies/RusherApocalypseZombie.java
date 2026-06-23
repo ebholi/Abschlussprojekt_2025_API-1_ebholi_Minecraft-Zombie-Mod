@@ -1,4 +1,4 @@
-package com.example;
+package com.y_apocalypse_zombies;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -127,7 +127,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
 
     // Actual Rush Goal Logic
     public class RushGoal extends Goal {
-        private static final Identifier RUSH_SPEED = Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, "rush_speed");
+        private static final Identifier RUSH_SPEED = Identifier.fromNamespaceAndPath(YApocalypseZombies.MOD_ID, "rush_speed");
         private LivingEntity target;
         private boolean gotToTarget = false;
 

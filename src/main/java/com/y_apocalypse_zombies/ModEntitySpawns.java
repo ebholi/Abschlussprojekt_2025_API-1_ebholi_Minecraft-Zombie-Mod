@@ -1,4 +1,4 @@
-package com.example;
+package com.y_apocalypse_zombies;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;

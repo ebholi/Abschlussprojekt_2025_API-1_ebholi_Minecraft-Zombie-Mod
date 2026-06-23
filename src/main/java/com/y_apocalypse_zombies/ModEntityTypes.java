@@ -1,4 +1,4 @@
-package com.example;
+package com.y_apocalypse_zombies;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
@@ -30,12 +30,12 @@ public class ModEntityTypes {
     );
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
-        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ExampleMod.MOD_ID, name));
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(YApocalypseZombies.MOD_ID, name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
     }
 
     public static void registerModEntityTypes() {
-        ExampleMod.LOGGER.info("Registering EntityTypes for " + ExampleMod.MOD_ID);
+        YApocalypseZombies.LOGGER.info("Registering EntityTypes for " + YApocalypseZombies.MOD_ID);
     }
 
     public static void registerYZombieAttributes() {

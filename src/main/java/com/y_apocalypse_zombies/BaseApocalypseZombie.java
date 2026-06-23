@@ -1,4 +1,4 @@
-package com.example;
+package com.y_apocalypse_zombies;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.SynchedEntityData;
