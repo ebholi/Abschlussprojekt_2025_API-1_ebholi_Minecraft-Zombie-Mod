@@ -47,7 +47,7 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
         return BaseApocalypseZombie.createAttributes()
                 .add(Attributes.ARMOR, 8)
                 .add(Attributes.JUMP_STRENGTH, 0.725)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.3)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.4)
                 .add(Attributes.MOVEMENT_SPEED, 0.18)
                 .add(Attributes.ATTACK_KNOCKBACK, 2)
                 .add(Attributes.ATTACK_DAMAGE, 7)
