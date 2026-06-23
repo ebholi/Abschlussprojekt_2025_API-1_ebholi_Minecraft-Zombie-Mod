@@ -26,6 +26,7 @@ import software.bernie.geckolib.animation.state.AnimationTest;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEntity {
+    // Entity Constructor
     public TankApocalypseZombie(EntityType<? extends Zombie> entityType, Level world) {
         super(entityType, world);
 
@@ -33,9 +34,15 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
         this.spawnBaseReinforcements = false;
     }
 
+    // GeckoLib Cache
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    // Special Attributes, bases itself on BaseApocalypseZombie class.
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.geoCache;
+    }
+
+    // Creating Attributes (inherits Attributes from Base and changes required ones)
     public static AttributeSupplier.Builder createAttributes() {
         return BaseApocalypseZombie.createAttributes()
                 .add(Attributes.ARMOR, 8)
@@ -50,12 +57,14 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     }
 
     // Data Field to send Server Target Information to the Client
+    // This field exists to control the aggro animation
     private static final EntityDataAccessor<Boolean> HAS_TARGET =
             SynchedEntityData.defineId(TankApocalypseZombie.class, EntityDataSerializers.BOOLEAN);
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
+        // Initial Data Value
         builder.define(HAS_TARGET, false);
     }
 
@@ -63,6 +72,7 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     public void tick() {
         super.tick();
         if (!this.level().isClientSide()) {
+            // Updates the target every tick
             this.entityData.set(HAS_TARGET, this.getTarget() != null);
         }
     }
@@ -71,12 +81,13 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
     public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
         boolean value = super.doHurtTarget(serverLevel, target);
         if (value) {
+            // Triggers Attack Animation whenever the Tank attacks
             this.triggerAnim("attack", "attack");
         }
         return value;
     }
 
-    // Animations
+    // Registering Animations
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>("walk", 2, this::walkAnimController));
@@ -85,36 +96,38 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
                 .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
     }
 
+    // Default Walk Loop
     protected PlayState walkAnimController(AnimationTest<TankApocalypseZombie> tank) {
         if (tank.isMoving()) {
             return tank.setAndContinue(RawAnimation.begin().thenLoop("walk_loop"));
         }
+        // Stops Animation
         tank.controller().reset();
         return PlayState.STOP;
     }
 
+    // Aggravated Walk Loop
     protected PlayState aggroWalkAnimController(AnimationTest<TankApocalypseZombie> tank) {
         if (this.entityData.get(HAS_TARGET)) {
             return tank.setAndContinue(RawAnimation.begin().thenLoop("aggro_walk_loop"));
         }
+        // Stops Animation
         tank.controller().reset();
         return PlayState.STOP;
     }
 
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.geoCache;
-    }
-
-    // Reinforcement Spawning
+    // Functions that happen when the Tank takes damage
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
         if (!super.hurtServer(serverLevel, damageSource, f)) {
             return false;
         } else if (!(damageSource.getEntity() instanceof LivingEntity) || this.isReinforcement()) {
+            // Cancels Reinforcement Logic if the Source wasn't a living Entity or if the Tank is a Reinforcement
             return true;
         } else {
+            // 1 in 4 Chance to spawn a Reinforcement
             if (serverLevel.random.nextInt(4) == 0) {
+                // Randomized Reinforcements
                 int reinforcementPercent = serverLevel.random.nextInt(100);
                 if (reinforcementPercent < 5) {
                     BaseApocalypseZombie reinforcement = ModEntityTypes.TANK_APOCALYPSE_ZOMBIE_ENTITY_TYPE
@@ -134,8 +147,10 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
         return true;
     }
 
+    // Helper Function so that I don't have to repeat this Code 3x
     private void verifyReinforcement(ServerLevel serverLevel, BaseApocalypseZombie reinforcement) {
         Difficulty difficulty = serverLevel.getDifficulty();
+        // Only spawns Reinforcement on Normal & Hard Difficulty
         if (reinforcement != null
                 && (difficulty == Difficulty.NORMAL || difficulty == Difficulty.HARD)) {
             reinforcement.setIsReinforcement(true);
@@ -154,7 +169,7 @@ public class TankApocalypseZombie extends BaseApocalypseZombie implements GeoEnt
                             (int) this.getZ() + serverLevel.random.nextInt(21) - serverLevel.random.nextInt(21)
                     )
             );
-
+            // Placing the Zombie in the Game
             reinforcement.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             serverLevel.addFreshEntity(reinforcement);
         }

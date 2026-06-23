@@ -104,7 +104,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
         return value;
     }
 
-    // Animations
+    // Registering Animations
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>("walk", 2, this::walkAnimController));
