@@ -150,6 +150,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     // Rush Goal definition
     public class RushGoal extends Goal {
         private static final Identifier RUSH_SPEED = Identifier.fromNamespaceAndPath(YApocalypseZombies.MOD_ID, "rush_speed");
+        private static final Identifier RUSH_DAMAGE = Identifier.fromNamespaceAndPath(YApocalypseZombies.MOD_ID, "rush_damage");
         private LivingEntity target;
         private boolean gotToTarget = false;
 
@@ -173,12 +174,21 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                     )
             );
+            // Increases Damage
+            RusherApocalypseZombie.this.getAttribute(Attributes.ATTACK_DAMAGE).addOrReplacePermanentModifier(
+                    new AttributeModifier(
+                            RUSH_DAMAGE,
+                            1.5,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                    )
+            );
         }
 
         // Stops the Rush and resets the Rusher to normal
         @Override
         public void stop() {
             RusherApocalypseZombie.this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(RUSH_SPEED);
+            RusherApocalypseZombie.this.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(RUSH_DAMAGE);
             RusherApocalypseZombie.this.setRushing(false);
             // Shorter Cooldown if Zombie didn't get to its Target
             if (gotToTarget) {
