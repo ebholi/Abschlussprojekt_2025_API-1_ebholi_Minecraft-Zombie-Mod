@@ -1,3 +1,8 @@
+# Author: Oliver Ebhardt
+# Created: 08.06.2026
+# Version: 0.2.2-alpha
+# Description: Rusher Zombie Type with his own Ability implemented using a Goal.
+
 # Gives .jar file to a modrinth instance for real-world testing
 
 Write-Host "Deploying Mod to Modrinth Instance..." -ForegroundColor Cyan
