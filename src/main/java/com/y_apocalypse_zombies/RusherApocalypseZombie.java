@@ -82,7 +82,6 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     public void setRushing(boolean value) {
         this.entityData.set(IS_RUSHING, value);
     }
-
     public void setHitRush(boolean value) {
         this.entityData.set(HIT_RUSH, value);
     }
@@ -91,7 +90,6 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     public boolean isRushing() {
         return this.entityData.get(IS_RUSHING);
     }
-
     public boolean isHitRush() {
         return this.entityData.get(HIT_RUSH);
     }
