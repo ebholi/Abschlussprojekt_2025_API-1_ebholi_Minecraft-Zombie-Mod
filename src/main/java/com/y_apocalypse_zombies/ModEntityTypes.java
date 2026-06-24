@@ -1,7 +1,7 @@
 /**
  * Author: Oliver Ebhardt
  * Created: 03.06.2026
- * Version: 0.2.1
+ * Version: 0.2.2-alpha
  * Description: Defines Builders for custom Entities & registers their Attributes.
  */
 

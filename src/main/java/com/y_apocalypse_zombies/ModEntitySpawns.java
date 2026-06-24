@@ -1,7 +1,7 @@
 /**
  * Author: Oliver Ebhardt
  * Created: 16.06.2026
- * Version: 0.2.1
+ * Version: 0.2.2-alpha
  * Description: Controls the natural Spawning of the custom Zombies.
  */
 

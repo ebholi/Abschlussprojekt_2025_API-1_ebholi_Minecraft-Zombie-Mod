@@ -1,7 +1,7 @@
 /**
  * Author: Oliver Ebhardt
  * Created: 01.06.2026
- * Version: 0.2.1
+ * Version: 0.2.2-alpha
  * Description: Client Side Mod mainly used to Register Entities to be rendered.
  */
 

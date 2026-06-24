@@ -1,7 +1,7 @@
 /**
  * Author: Oliver Ebhardt
  * Created: 01.06.2026
- * Version: 0.2.1
+ * Version: 0.2.2-alpha
  * Description: Registers things added to the Mod. For this one, it's all Entities.
  */
 
