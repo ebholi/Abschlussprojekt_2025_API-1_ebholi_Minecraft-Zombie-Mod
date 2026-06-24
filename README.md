@@ -54,7 +54,7 @@ The Mod depends on the following projects to also be installed:
 
 ### Modrinth
 
-Download the project from [Modrinth](https://modrinth.com) and add it to any **Fabric 1.21.11** Modpack.
+Download the project from [Modrinth](https://modrinth.com/mod/y-apocalypse-zombies) and add it to any **Fabric 1.21.11** Modpack.
 
 ### Manual Install
 
