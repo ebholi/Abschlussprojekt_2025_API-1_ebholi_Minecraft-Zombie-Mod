@@ -105,6 +105,13 @@ The Tank can jump very high but basically never uses this skill because his path
 
 ## Planned Features
 
+### Armor render Support
+
+Armor should be rendered for the Rusher to avoid confusion.
+Due to the Tank's more complex Model and it's nature,
+I likely won't add Armor support for it as it fits the identity of the Tank.
+A tankier Tank isn't a bad thing to me.
+
 ### Randomized Textures
 
 In order to provide more variety, I'll add many different outfits for the zombies and different Skin Textures as well.
