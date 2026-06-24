@@ -144,6 +144,7 @@ public class RusherApocalypseZombie extends BaseApocalypseZombie implements GeoE
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        // 1 = #1 Priority, overrides most other goals
         this.goalSelector.addGoal(1, new RushGoal());
     }
 
