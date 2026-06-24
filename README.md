@@ -17,6 +17,7 @@ Made for my final project at the Basic Learning Year in ZLI.
 - [Running the Project directly from an IDE / CLI](#running-the-project-directly-from-an-ide--cli)
 - [Scripts](#scripts)
 - [License](#license)
+- [Known Issues](#known-issues)
 - [Planned Features](#planned-features)
 
 ## Features
@@ -92,16 +93,17 @@ If you want to install the scripts, you can download them from this [repository]
 
 This Project is licensed under the [MIT License](https://mit-license.org/).
 
-## Planned Features
+## Known Issues
 
-### Base Zombie update
+### Base Zombie Texture
 
-I'll be giving the Base Zombie its own Texture instead of using the default Zombie's Texture.
+The Base Zombie currently uses the default Zombie Texture instead of having his own.
 
-### Tank update
+### Tank cannot Jump
 
 The Tank can jump very high but basically never uses this skill because his pathfinding wasn't made for it.
-I aim to fix this, so that the Tank becomes a truly formidable threat.
+
+## Planned Features
 
 ### Randomized Textures
 
