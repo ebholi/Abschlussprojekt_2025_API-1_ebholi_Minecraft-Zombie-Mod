@@ -110,6 +110,11 @@ Armor should be rendered for the Rusher to avoid confusion. Due to the Tank's mo
 I likely won't add Armor support for it as it fits the identity of the Tank.
 A tankier Tank isn't a bad thing to me.
 
+### Shield Bugs
+
+The Shield blocking an attack doesn't trigger the attack animation.
+Furthermore, the Rush from a Rusher isn't stopped when hitting a shield, leading to weird circling behavior.
+
 ## Planned Features
 
 ### Randomized Textures
