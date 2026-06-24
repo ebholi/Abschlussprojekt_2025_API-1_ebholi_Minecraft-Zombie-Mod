@@ -103,14 +103,14 @@ The Base Zombie currently uses the default Zombie Texture instead of having his 
 
 The Tank can jump very high but basically never uses this skill because his pathfinding wasn't made for it.
 
-## Planned Features
+### Lacking Armor render Support
 
-### Armor render Support
-
-Armor should be rendered for the Rusher to avoid confusion.
-Due to the Tank's more complex Model and it's nature,
+Right now, Armor doesn't render on the custom Zombie's models.
+Armor should be rendered for the Rusher to avoid confusion. Due to the Tank's more complex Model and it's nature,
 I likely won't add Armor support for it as it fits the identity of the Tank.
 A tankier Tank isn't a bad thing to me.
+
+## Planned Features
 
 ### Randomized Textures
 
