@@ -17,6 +17,7 @@ Made for my final project at the Basic Learning Year in ZLI.
 - [Running the Project directly from an IDE / CLI](#running-the-project-directly-from-an-ide--cli)
 - [Scripts](#scripts)
 - [License](#license)
+- [Planned Features](#planned-features)
 
 ## Features
 
@@ -28,11 +29,15 @@ The Base Zombie is a slightly weaker version to the regular Zombie but spawns in
 
 ### Rusher
 
-The Rusher has a special move. Upon first seeing you, it will charge towards you at a fast pace until taking or dealing damage. If he does catch you, he'll deal 1.5x the amount of damage he usually does.
+The Rusher has a special move. Upon first seeing you,
+it will charge towards you at a fast pace until taking or dealing damage.
+If he does catch you, he'll deal 1.5x the amount of damage he usually does.
 
 ### Tank
 
-The Tank is a lot bulkier than the average zombie, which is both a benefit and drawback. With increased Damage, Health and knockback, he's a force to be reckoned with. He also has a very high chance to summon reinforcements to aid him in battle.
+The Tank is a lot bulkier than the average zombie, which is both a benefit and drawback.
+With increased Damage, Health and knockback, he's a force to be reckoned with.
+He also has a very high chance to summon reinforcements to aid him in battle.
 
 ## Installation
 
@@ -80,8 +85,59 @@ cd Abschlussprojekt_2025_API-1_ebholi_Minecraft-Zombie-Mod
 
 ## Scripts
 
-This project includes three scripts to aid development. If you want to install the scripts, you can download them from this [repository](https://github.com/Yooli8537/Minecraft-Fabric-1.21.11-Development-Scripts).
+This project includes three scripts to aid development.
+If you want to install the scripts, you can download them from this [repository](https://github.com/Yooli8537/Minecraft-Fabric-1.21.11-Development-Scripts).
 
 ## License
 
 This Project is licensed under the [MIT License](https://mit-license.org/).
+
+## Planned Features
+
+### Base Zombie update
+
+I'll be giving the Base Zombie its own Texture instead of using the default Zombie's Texture.
+
+### Tank update
+
+The Tank can jump very high but basically never uses this skill because his pathfinding wasn't made for it.
+I aim to fix this, so that the Tank becomes a truly formidable threat.
+
+### Randomized Textures
+
+In order to provide more variety, I'll add many different outfits for the zombies and different Skin Textures as well.
+
+### Crawler
+
+The Crawler will be a Zombie which crawls on the floor.
+By doing this, he'll be able to get to his target through the smallest of gaps.
+
+### Ranged Zombie
+
+I don't know how I will implement this yet, but some kind of ranged Zombie is on my To-Do List.
+
+### Leaper
+
+The Leaper will be able to jump over larger walls and ambush a player hiding behind the cover of one.
+
+### Villager compatibility
+
+Villagers aren't scared of the Apocalypse Zombies, even though they attack them.
+This is obviously unintended and will be fixed at some point.
+
+### Curing
+
+All the Zombies should be able to be cured, as they're all obviously people.
+Curing them will turn them into regular Villagers.
+
+### Infection
+
+When a Villager is killed, he should convert to one of the Apocalypse Zombies
+instead of just becoming a regular Zombie Villager.
+I may implement a brand-new Class of Zombie for this so that the iconic Villager Nose stays with them.
+Pillagers should also be infected and converted into the ranged Zombie version.
+
+### Advanced AI
+
+The Zombies should have a vague sense of teamwork, grouping together and
+attacking from different angles to make stopping them harder.
